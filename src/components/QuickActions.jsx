@@ -63,7 +63,7 @@ function ProductionModal({ onClose, onSuccess }) {
         padsProduced: parseInt(form.padsProduced, 10),
         operator:     form.operator,
       });
-      onSuccess('Production run logged successfully.');
+      onSuccess('Production run logged successfully. — An automated message has been sent to the Factory Manager.');
       onClose();
     } catch (err) {
       setError(err.message);
@@ -135,7 +135,7 @@ function ReceiveModal({ onClose, onSuccess }) {
         poNumber:   form.poNumber,
         operator:   form.operator,
       });
-      onSuccess('Materials received and stock updated.');
+      onSuccess('Materials received and stock updated. — An automated message has been sent to the Factory Manager.');
       onClose();
     } catch (err) {
       setError(err.message);
@@ -200,7 +200,7 @@ function ScrapModal({ onClose, onSuccess }) {
         reason:       form.reason,
         operator:     form.operator,
       });
-      onSuccess('Scrap event logged.');
+      onSuccess('Scrap event logged. — An automated message has been sent to the Factory Manager.');
       onClose();
     } catch (err) {
       setError(err.message);

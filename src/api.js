@@ -14,6 +14,7 @@ export const api = {
   // Materials
   getMaterials:    ()             => request('/materials'),
   getMaterial:     (id)           => request(`/materials/${id}`),
+  getMaterialHistory: (id)        => request(`/materials/${id}/history`),
 
   // KPI
   getKpi:          ()             => request('/kpi'),

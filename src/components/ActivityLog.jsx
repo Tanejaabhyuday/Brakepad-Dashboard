@@ -38,12 +38,27 @@ function ConfirmModal({ message, onConfirm, onCancel }) {
   );
 }
 
+// ── Toast notification ────────────────────────────────────────────────────────
+function Toast({ message, onDismiss }) {
+  useEffect(() => {
+    const t = setTimeout(onDismiss, 4000);
+    return () => clearTimeout(t);
+  }, [onDismiss]);
+
+  return (
+    <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-xl bg-stone-900 px-5 py-3 text-sm font-medium text-white shadow-xl">
+      ✓ &nbsp;{message}
+    </div>
+  );
+}
+
 export default function ActivityLog({ refreshSignal, onActionComplete }) {
   const [logs, setLogs]         = useState([]);
   const [loading, setLoading]   = useState(true);
   const [error, setError]       = useState(null);
-  const [deleting, setDeleting] = useState(null);   // id being deleted, or 'all'
-  const [confirm, setConfirm]   = useState(null);   // { type: 'one'|'all', id? }
+  const [deleting, setDeleting] = useState(null);
+  const [confirm, setConfirm]   = useState(null);
+  const [toast, setToast]       = useState(null);
 
   const load = useCallback(() => {
     setLoading(true);
@@ -62,6 +77,7 @@ export default function ActivityLog({ refreshSignal, onActionComplete }) {
     try {
       await api.deleteActivity(id);
       setLogs((prev) => prev.filter((l) => l.id !== id));
+      setToast('Log entry deleted. — An automated message has been sent to the Factory Manager.');
       onActionComplete?.();
     } catch (e) {
       setError(e.message);
@@ -77,6 +93,7 @@ export default function ActivityLog({ refreshSignal, onActionComplete }) {
     try {
       await api.clearActivity();
       setLogs([]);
+      setToast('All logs cleared. — An automated message has been sent to the Factory Manager.');
       onActionComplete?.();
     } catch (e) {
       setError(e.message);
@@ -234,6 +251,7 @@ export default function ActivityLog({ refreshSignal, onActionComplete }) {
           onCancel={() => setConfirm(null)}
         />
       )}
+      {toast && <Toast message={toast} onDismiss={() => setToast(null)} />}
     </>
   );
 }
